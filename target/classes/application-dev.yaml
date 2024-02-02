@@ -1,0 +1,100 @@
+spring:
+  application:
+    name: SafetyTalk
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 200MB
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/safety_talk?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    druid:
+      initial-size: 5
+      max-active: 8
+      min-idle: 5
+      max-wait: 10000
+      time-between-eviction-runs-millis: 60000
+      min-evictable-idle-time-millis: 300000
+      pool-prepared-statements: true
+      max-pool-prepared-statement-per-connection-size: 20
+      test-while-idle: true
+      test-on-borrow: false
+      test-on-return: false
+      # localhost:8080/druid/index.html
+      # 输入登录名和密码，执行一条sql语句，即可看到监控信息。
+      stat-view-servlet:
+        enabled: false
+        url-pattern: /druid/*
+        #login-username: admin
+        #login-password: admin
+      filter:
+        stat:
+          log-slow-sql: false
+          slow-sql-millis: 1000
+          merge-sql: false
+        wall:
+          config:
+            multi-statement-allow: true
+  #Redis
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      password: redis
+
+  #Email
+  mail:
+    host: smtp.163.com
+    port: 25
+    username: FitOnTime@163.com
+    password: ESSIGLPIWUZHFQUB
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+    from: FitOnTime@163.com
+
+email:
+  verification:
+    subject: "SafetyTalk Verification Code"
+    text-template: "Your verification code is: {0}, Your verification code is valid for {1} minutes."
+    expiration-minutes: 5
+
+#mybatis plus
+mybatis-plus:
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  typeAliasesPackage: com.leo.safetytalk.entity
+  global-config:
+    banner: true
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: ASSIGN_ID
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_NULL
+      #驼峰下划线转换
+      column-underline: true
+      logic-delete-value: -1
+      logic-not-delete-value: 0
+  #原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: true
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.Fitontime.controller.WeeklyMenuController: DEBUG
